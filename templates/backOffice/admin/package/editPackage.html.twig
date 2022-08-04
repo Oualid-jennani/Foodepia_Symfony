@@ -1,0 +1,91 @@
+{% extends 'backOffice/baseDash.html.twig' %}
+{% block title %}Dashboard | Edit Package{% endblock %}
+{% block body %}
+
+
+	<div class="col-md-12">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb breadcrumb-arrow has-gap has-bg">
+				<li class="breadcrumb-item"><a href="{{ path('dashboard') }}"><i class="material-icons">home</i> Home</a></li>
+				<li class="breadcrumb-item"><a href="javascript:void(0)">Package</a></li>
+				<li class="breadcrumb-item active"><a href="javascript:void(0)">Edit Package</a></li>
+			</ol>
+		</nav>
+	</div>
+
+
+	<div class="col-md-12">
+		<div class="col-8 mx-auto">
+			<div class="ms-panel ms-panel-fh">
+				<div class="ms-panel-header">
+					<h6>Edit Package</h6>
+				</div>
+
+				{% for  message in app.flashes('success') %}
+					<div class=" text-success">{{ message }}</div>
+				{% endfor %}
+
+				{% for  message in app.flashes('error') %}
+					<div class=" text-success">{{ message }}</div>
+				{% endfor %}
+
+				<div class="ms-panel-body">
+					{{ form_start(form,{'attr':{'class':'needs-validation clearfix'}}) }}
+					<div class="form-row">
+
+						<div class="text-danger">{{ form_errors(form.name)}}</div>
+						<label>Package Name</label>
+						<div class="input-group">
+							{{ form_widget(form.name, {'attr':{'class':'form-control','type':'text','placeholder':'Name','id':'validationCustom01'}}) }}
+						</div>
+
+						<div class="text-danger">{{ form_errors(form.description)}}</div>
+						<label>Package Description</label>
+						<div class="input-group">
+							{{ form_widget(form.description , { 'attr' : {'class':'form-control','placeholder':'Description'} }) }}
+						</div>
+
+						<div class="text-danger">{{ form_errors(form.price)}}</div>
+						<label>Package Price</label>
+						<div class="input-group">
+							{{ form_widget(form.price , { 'attr' : {'class':'form-control','placeholder':'Price'} }) }}
+						</div>
+
+						<div class="text-danger">{{ form_errors(form.memberShipLimit)}}</div>
+						<label>Member Ship Limit</label>
+						<div class="input-group">
+							{{ form_widget(form.memberShipLimit , { 'attr' : {'class':'form-control','placeholder':'Member Ship limit'} }) }}
+						</div>
+
+						<div class="text-danger">{{ form_errors(form.packUsage)}}</div>
+						<label>Package Usage</label>
+						<div class="input-group">
+							{{ form_widget(form.packUsage , { 'attr' : {'class':'form-control','placeholder':'Package Usage'} }) }}
+						</div>
+
+						<div class="text-danger">{{ form_errors(form.type)}}</div>
+						<label>Package Type</label>
+						<div class="input-group">
+							{{ form_widget(form.type , { 'attr' : {'class':'form-control','placeholder':'Type'} }) }}
+						</div>
+
+						<div class="text-danger">{{ form_errors(form.limitMerchantBySell)}}</div>
+						<label>Merchant Limit By Sell</label>
+						<div class="input-group">
+							{{ form_widget(form.limitMerchantBySell , { 'attr' : {'class':'form-control','placeholder':'Limit Merchant By Sell'} }) }}
+						</div>
+
+					</div>
+					<div class="form-row">
+						<div class="col-12 text-right p-0">
+							<button type="submit" class="btn btn-primary m-0">Edit</button>
+						</div>
+					</div>
+					{{ form_end(form) }}
+				</div>
+			</div>
+		</div>
+	</div>
+
+{%  endblock %}
+

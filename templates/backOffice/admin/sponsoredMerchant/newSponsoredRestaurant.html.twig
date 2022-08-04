@@ -1,0 +1,81 @@
+{% extends 'backOffice/baseDash.html.twig' %}
+{% block title %}Dashboard | New Sponsored Restaurant{% endblock %}
+{% block stylesheets %}
+	<!-- Pick date -->
+	<link rel="stylesheet" href="{{ asset('dashAssets/picker/pickadate/themes/default.css') }}">
+	<link rel="stylesheet" href="{{ asset('dashAssets/picker/pickadate/themes/default.date.css') }}">
+	<link rel="stylesheet" href="{{ asset('dashAssets/picker/picker.css') }}">
+{% endblock %}
+{% block body %}
+
+
+	<div class="col-md-12">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb breadcrumb-arrow has-gap has-bg">
+				<li class="breadcrumb-item"><a href="{{ path('dashboard') }}"><i class="material-icons">home</i> Home</a></li>
+				<li class="breadcrumb-item"><a href="javascript:void(0)">Restaurant</a></li>
+				<li class="breadcrumb-item active"><a href="{{ path('dashAdminNewSponsoredRestaurant') }}">New sponsored restaurant</a></li>
+			</ol>
+		</nav>
+	</div>
+
+
+	<div class="col-md-12">
+		<div class="col-8 mx-auto">
+			<div class="ms-panel ms-panel-fh">
+				<div class="ms-panel-header mb-4">
+					<h6 class="float-left">Add New Sponsored Restaurant</h6>
+					{% for  message in app.flashes('success') %}
+						<div class=" text-success float-right font-weight-blod">{{ message }}</div>
+					{% endfor %}
+
+					{% for  message in app.flashes('error') %}
+						<div class=" text-danger float-right font-weight-blod">{{ message }}</div>
+					{% endfor %}
+				</div>
+
+
+
+				<div class="ms-panel-body">
+					{{ form_start(form,{'attr':{'class':'needs-validation clearfix'}}) }}
+					<div class="form-row">
+						<label for="validationCustom01">Restaurant Name</label>
+						<div class="text-danger font-weight-bold">{{ form_errors(form.user) }}</div>
+						<div class="input-group">
+							{{ form_widget(form.user, {'attr':{'class':'form-control','id':'validationCustom01'}}) }}
+						</div>
+
+						<label for="validationCustom01">Start Date</label>
+						<div class="text-danger font-weight-bold">{{ form_errors(form.startDate) }}</div>
+						<div class="input-group">
+							{{ form_widget(form.startDate , { 'attr' : {'class':'datepicker-default form-control','type':'date'} }) }}
+						</div>
+
+						<label for="validationCustom01">End Date</label>
+						<div class="text-danger font-weight-bold">{{ form_errors(form.endDate) }}</div>
+						<div class="input-group">
+							{{ form_widget(form.endDate , { 'attr' : {'class':'datepicker-default form-control','type':'date'} }) }}
+						</div>
+
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="col-12 text-right p-0">
+							<button type="submit" class="btn btn-primary m-0">Save <i class="fas fa-save ml-2"></i></button>
+						</div>
+					</div>
+					{{ form_end(form) }}
+				</div>
+			</div>
+		</div>
+	</div>
+
+{%  endblock %}
+{% block javascripts %}
+	<!-- pickdate -->
+	<script src="{{ asset('dashAssets/picker/global.min.js') }}"></script>
+	<script src="{{ asset('dashAssets/picker/pickadate/picker.js') }}"></script>
+	<script src="{{ asset('dashAssets/picker/pickadate/picker.date.js') }}"></script>
+	<script src="{{ asset('dashAssets/picker/pickadate-init.js') }}"></script>
+{% endblock %}

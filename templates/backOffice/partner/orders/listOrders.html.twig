@@ -1,0 +1,194 @@
+{% extends 'backOffice/baseDash.html.twig' %}
+{% block title %}Dashboard | Orders{% endblock %}
+{% block body %}
+
+	<div class="col-md-12">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb breadcrumb-arrow has-gap has-bg">
+				<li class="breadcrumb-item"><a href="{{ path('dashboard') }}"><i class="material-icons">home</i> {% trans %}Home{% endtrans %}</a></li>
+				<li class="breadcrumb-item"><a href="javascript:void(0)">{% trans %}Orders{% endtrans %}</a></li>
+				<li class="breadcrumb-item active"><a href="javascript:void(0)">{% trans %}List Orders{% endtrans %}</a></li>
+			</ol>
+		</nav>
+	</div>
+
+
+	<div class="col-md-12">
+		<div class="col-md-12 mx-auto">
+			<div class="ms-panel">
+				<div class="ms-panel-header mb-4">
+					<h6 class="float-left">{% trans %}Orders List{% endtrans %}</h6>
+					{% for  message in app.flashes('success') %}
+						<div class=" text-success font-weight-bold float-right">{{ message }}</div>
+					{% endfor %}
+
+					{% for  message in app.flashes('error') %}
+						<div class=" text-danger font-weight-bold float-right">{{ message }}</div>
+					{% endfor %}
+				</div>
+				<div class="ms-panel-body">
+
+					<div class="table-responsive">
+						<table id="example4" class="table table-hover thead-primary text-center">
+							<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">{% trans %}Order Date{% endtrans %}</th>
+								<th scope="col">{% trans %}Customer Name{% endtrans %}</th>
+								<th scope="col">{% trans %}Customer Phone{% endtrans %}</th>
+								<th scope="col">Detail</th>
+							</tr>
+							</thead>
+							<tbody>
+
+							{% for order in orders |sort|reverse %}
+								<tr>
+									<td>{{ order.trackNumber }}</td>
+									<td>{{ order.orderDate|date("d/m/Y") }}</td>
+									<td>{{ order.fullName }}</td>
+									<td>{{ order.phone }}</td>
+									<td>
+										<a href='javascript:void(0)' onclick="chargeOrder({{ order.id }})"><i class='m-auto far fa-eye'></i></a>
+									</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="modal-1" tabindex="-1" role="dialog" aria-labelledby="modal-1">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<h3 class="modal-title has-icon ms-icon-round "><i class="flaticon-alert-1 bg-primary text-white"></i> {% trans %}Delete Confirm{% endtrans %}!</h3>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				</div>
+
+				<div class="modal-body">
+					<p>{% trans %}Do you really want to delete{% endtrans %} ?</p>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-light" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
+					<a href="#" class="btn btn-primary shadow-none" id="linkDelete">{% trans %}Delete{% endtrans %}</a>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="modal-13" tabindex="-1" role="dialog" aria-labelledby="modal-13">
+		<div class="modal-dialog  modal-lg modal-dialog-centered modal-max" role="document">
+			<div class="modal-content">
+
+
+				<div class="modal-body">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h3>{% trans %}Order Details{% endtrans %}</h3>
+					<div class="media-body">
+
+						<div class="col-md-3 m-auto zoomInDown">
+							<div class="spinner spinner-3">
+								<div class="rect1"></div>
+								<div class="rect2"></div>
+								<div class="rect3"></div>
+								<div class="rect4"></div>
+								<div class="rect5"></div>
+							</div>
+						</div>
+
+						<div class="table-responsive tableOrderDetail">
+							<table class="table table-striped">
+								<thead>
+								<tr>
+									<th scope="col">{% trans %}Menu/SubMenu{% endtrans %}</th>
+									<th scope="col">{% trans %}Size{% endtrans %}</th>
+									<th scope="col">{% trans %}Price{% endtrans %}</th>
+									<th scope="col">Qty</th>
+									<th scope="col">Total</th>
+								</tr>
+								</thead>
+								<tbody id="linesOrder">
+
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="3"></td>
+										<td class="text-right"><strong>Delivery && Foodepia Fees :</strong></td>
+										<td class="text-success">15 DHs</td>
+									</tr>
+									<tr>
+										<td colspan="3"></td>
+										<td class="text-right"><strong>Totals :</strong></td>
+										<td class="text-success" id="totals">0 DHs</td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</div>
+					<div class="d-flex justify-content-between">
+						<button type="button" class="btn btn-light" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+{%  endblock %}
+
+{% block javascripts %}
+
+	<script>
+
+        function deletePackage(link) {
+            document.getElementById("linkDelete").href = link;
+        }
+
+        function chargeOrder(id) {
+
+            $.ajax({
+                'url' : '/chef/detailOrder', // To change with Routing.generate later
+                'data' : {
+                    'order' : id
+                },
+                'type': 'post',
+                'beforeSend' : function() {
+                    $('.tableOrderDetail').hide();
+                    $('.spinner-3').show();
+                    $('#modal-13').modal('show');
+                },
+                success: function (data) {
+                    var lines = '';
+                    for (var i = 0; i < data.length-1 ; i++){
+                        lines += '<tr>' +
+                        '<td class="">' +
+                            '<img src="' + data[i]["image"] + '" alt="people" width="50" height="50" class="mr-2">' +
+                            '<strong>' + data[i]["menu"] + '</strong>' +
+                            '<span>' + data[i]["subMenu"] + '</span>' +
+                        '</td>' +
+                        '<td>' + data[i]["size"] + '</td>' +
+                        '<td>' + data[i]["price"] + ' Dhs</td>' +
+                        '<td>' + data[i]["quantity"] + '</td>' +
+                        '<td>' + data[i]["total"] + 'Dhs</td>' +
+                        '</tr>';
+                    }
+                    document.getElementById("linesOrder").innerHTML = lines;
+                    document.getElementById("totals").innerText = data[data.length-1]["totals"] + ' Dhs';
+
+                    $('.spinner-3').hide();
+                    $('.tableOrderDetail').show();
+                }
+            });
+
+        }
+
+	</script>
+
+{% endblock %}

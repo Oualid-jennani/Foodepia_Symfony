@@ -1,0 +1,206 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Foodepia | Product{% endblock %}
+
+{% block body %}
+	<!-- =========================== Product Detail =================================== -->
+	<section>
+		<div class="container">
+			{{ form_start(form) }}
+
+				{% for message in app.flashes('success') %}
+					<div class="alert alert-success">{% trans %}The Product is Added to{% endtrans %}  <strong><a href="{{ path('cart') }}">{% trans %}Cart{% endtrans %} <i class="ti-shopping-cart-full ml-2"></i> </a></strong></div>
+				{% endfor %}
+				<div class="row">
+						{% if menu|default(null) %}
+
+						<div class="col-lg-6 col-md-12 col-sm-12">
+							<div class="sp-loading"><img src="https://via.placeholder.com/1100x1220" alt=""><br>LOADING IMAGES </div>
+							<div class="sp-wrap">
+								{% for image in menu.images |sort|reverse|slice(0, 6) %}
+									<a href="{{ asset('images/menu/') }}{{ image }}"><img src="{{ asset('images/menu/') }}{{ image }}" alt=""></a>
+								{% endfor %}
+							</div>
+						</div>
+
+						<div class="col-lg-6 col-md-12 col-sm-12">
+							<div class="woo_pr_detail">
+
+								<div class="woo_cats_wrps">
+									<a href="#" class="woo_pr_cats">{{ menu.menuCategory.cuisineName }}</a>
+								</div>
+								<h2 class="woo_pr_title">{{ menu.name }}</h2>
+
+								<!--
+								<div class="woo_pr_reviews">
+									<div class="woo_pr_rating">
+										<i class="fa fa-star filled"></i>
+										<i class="fa fa-star filled"></i>
+										<i class="fa fa-star filled"></i>
+										<i class="fa fa-star filled"></i>
+										<i class="fa fa-star"></i>
+										<span class="woo_ave_rat">4.8</span>
+									</div>
+								</div>
+								-->
+								{% if not menu.subMenus|default(null) %}
+									<div class="woo_pr_price">
+										<div class="woo_pr_offer_price">
+											<h3 id="priceMenu"></h3>
+											<span class="ml-3">
+												{% if menu.variants[0].menu.user.city.country.name =="Morroco" %}
+													Dhs
+												{% else %}
+													$
+												{% endif %}
+											</span>
+										</div>
+									</div>
+									<div class="woo_pr_short_desc">
+										<p>{{ menu.description }}</p>
+									</div>
+
+									<div id="sizeMenu" class="woo_pr_color flex_inline_center mb-3">
+										<div class="woo_pr_varient">
+											<h6>Size:</h6>
+										</div>
+										<div class="pl-3">
+											{% if menu.variants|default(null) %}
+												{% for variant in menu.variants|sort((a, b) => a.sort >= b.sort) %}
+													<input type="radio" class="custom-control-input" name="variant[id]" onclick="changePriceMenu('priceMenu',{{ variant.price }})" id="vr{{ variant.id }}" value="{{ variant.id }}" data-toggle="form-caption" data-target="#sizeCaption">
+													{% if variant.size == 'standard' %}
+														<label class="custom-control-label mr-3" for="vr{{ variant.id }}">{{ variant.size|capitalize }}</label>
+													{% else %}
+														<label class="custom-control-label mr-3" for="vr{{ variant.id }}">{{ variant.size|upper }}</label>
+													{% endif %}
+												{% endfor %}
+											{% endif %}
+										</div>
+									</div>
+
+								{% else %}
+
+									<div class="woo_pr_short_desc">
+										<p>{{ menu.description }}</p>
+									</div>
+
+									<div class="table-responsive">
+										<table class="table">
+											<tbody>
+												{% for subMenu in menu.subMenus %}
+													{% if subMenu.variants|default(null) %}
+														<tr>
+															<td>
+																<div class="tbl_cart_product">
+																	<div class="tbl_cart_product_thumb bundel_flex">
+																		<div class="bundel_cart_select">
+																			<input  type="radio" id="sbm{{ subMenu.id }}" onclick="ChangeClickVariant('sbmv{{ subMenu.id }}')" class="custom-control-input" name="subMenu">
+																			<label for="sbm{{ subMenu.id }}" class="custom-control-label"></label>
+																		</div>
+																		<div class="cart_pr_thumbs">
+																			<img src="{{ asset('images/sub_menu/') }}{{ subMenu.imageUrl }}" class="img-fluid" alt="" />
+																		</div>
+																	</div>
+																	<div class="tbl_cart_product_caption">
+																		<h5 class="tbl_pr_title">{{ subMenu.name }}</h5>
+																	</div>
+																</div>
+
+																<div class="text-success text-center mt-3">
+
+																	{% for variant in subMenu.variants|sort((a, b) => a.sort >= b.sort) %}
+																		<input type="radio" class="custom-control-input sbmv{{ subMenu.id }}" name="variant[id]" onclick="changePriceSubMenu('sbmp{{ subMenu.id }}',{{ variant.price }},'sbm{{ subMenu.id }}')" id="vr{{ variant.id }}" value="{{ variant.id }}" data-toggle="form-caption" data-target="#sizeCaption">
+																		{% if variant.size == 'standard' %}
+																			<label class="custom-control-label mr-3" for="vr{{ variant.id }}">{{ variant.size|capitalize }}</label>
+																		{% else %}
+																			<label class="custom-control-label mr-3" for="vr{{ variant.id }}">{{ variant.size|upper }}</label>
+																		{% endif %}
+																	{% endfor %}
+																</div>
+															</td>
+															<td>
+																<h4 class="tbl_org_price" id="sbmp{{ subMenu.id }}"></h4>
+																<span>
+																	{% if subMenu.menu.user.city.country.name =="Morroco" %}
+																		 Dhs
+																	{% else %}
+																			$
+																	{% endif %}
+																</span>
+															</td>
+													</tr>
+													{% endif %}
+												{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								{% endif %}
+
+								<div class="woo_btn_action">
+									<div class="col-12 col-lg-auto p-0">
+										{{ form_widget(form.quantity,{'attr':{'class':'form-control qua_pr mb-2','value':'1','min':'1','max':'10'}}) }}
+									</div>
+									<div class="col-12 col-lg-auto">
+										<button type="submit" class="btn btn-block btn-dark mb-2">{% trans %}Add to Cart{% endtrans %} <i class="ti-shopping-cart-full ml-2"></i></button>
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endif %}
+				</div>
+			{{ form_end(form) }}
+		</div>
+	</section>
+	<!-- =========================== Product Detail =================================== -->
+
+	<!-- =========================== Cart Detail =================================== -->
+	{{ render(url('headerCart')) }}
+	<!-- =========================== Cart Detail =================================== -->
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+
+	<script>
+        function changePriceMenu(labelPrice,menuPrice){
+            document.getElementById(labelPrice).textContent = menuPrice;
+        }
+
+        function changePriceSubMenu(labelPrice,subMenuPrice,checkSubMenu){
+
+	        var listPrice = document.getElementsByClassName('tbl_org_price');
+
+            for (var i = 0; i < listPrice.length; i++) {
+                listPrice[i].style.display = 'none';
+            }
+
+            document.getElementById(labelPrice).textContent = subMenuPrice;
+            document.getElementById(labelPrice).style.display = 'block';
+            document.getElementById(checkSubMenu).checked = true;
+        }
+
+        function ChangeClickVariant(radioVariant){
+            document.getElementsByClassName(radioVariant)[0].click();
+        }
+
+
+
+
+        var sizeRadio = document.getElementsByName("variant[id]");
+        if(sizeRadio.length > 0)
+        {
+            sizeRadio[0].click();
+        }
+
+        var subMenu = document.getElementsByName("subMenu");
+        if(subMenu.length > 0)
+        {
+            subMenu[0].click();
+        }
+
+
+	</script>
+
+{% endblock %}

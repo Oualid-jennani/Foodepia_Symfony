@@ -1,0 +1,54 @@
+{% extends 'backOffice/baseDash.html.twig' %}
+{% block title %}Dashboard | Edit Province{% endblock %}
+{% block body %}
+
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb-arrow has-gap has-bg">
+                <li class="breadcrumb-item"><a href="{{ path('dashboard') }}"><i class="material-icons">home</i> Home</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Provinces</a></li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-8 mx-auto">
+            <div class="ms-panel ms-panel-fh">
+                <div class="ms-panel-header mb-4">
+                    <h6 class="float-left">{% trans %}Edit Province{% endtrans %}</h6>
+
+                    {% for  type,messages in app.flashes %}
+                        {% for message in messages %}
+                            <div class=" text-{{ type }} float-right">{{ message }}</div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+
+                <div class="ms-panel-body">
+                    {{ form_start(form , {'method': 'post'} ,{'attr':{'class':'needs-validation clearfix'}}) }}
+
+                    <div class="form-row">
+                        <label for="validationCustom29">Province Name</label>
+                        <div class="input-group">
+                            {{ form_widget(form.name,{'attr':{'class':'form-control','type':'text','placeholder':'Province Name','id':'validationCustom29'}}) }}
+                            <div class="text-danger">{{ form_errors(form.name)}}</div>
+                        </div>
+                        <div class="input-group">
+                            {{ form_widget(form.country,{'attr':{'class':'form-control','id':'validationCustom29'}}) }}
+                            <div class="text-danger">{{ form_errors(form.country)}}</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12 text-right p-0">
+                            <button type="submit" class="btn btn-primary m-0">{{ 'Save'|trans }}<i class="fa fa-save ml-2"></i></button>
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{%  endblock %}

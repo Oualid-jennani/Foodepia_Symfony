@@ -1,0 +1,21 @@
+{% extends 'backOffice/baseDash.html.twig' %}
+{% block title %}Dashboard | Dashboard{% endblock %}
+{% block body %}
+
+    {% if restaurant.coverImage is null %}
+        <div class="col-lg-12">
+            <div class="alert alert-danger font-weight-bold"> <a href="{{ path('dashRestauProfile') }}">{% trans %}You need to complete your cover picture{% endtrans %}</a></div>
+        </div>
+    {% endif %}
+    {% if restaurant.profileImage is null %}
+        <div class="col-lg-12">
+            <div class="alert alert-danger font-weight-bold"><a href="{{ path('dashRestauProfile') }}">{% trans %}You need to complete your profile picture{% endtrans %}</a></div>
+        </div>
+    {% endif %}
+    {% if restaurant.localisation is null %}
+        <div class="col-lg-12">
+            <div class="alert alert-danger font-weight-bold"><a href="{{ path('dashRestauProfile') }}">{% trans %}You need to complete your localisation information's{% endtrans %}</a></div>
+        </div>
+    {% endif %}
+
+{% endblock %}

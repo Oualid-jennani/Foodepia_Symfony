@@ -1,0 +1,266 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Foodepia{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        header{background-color: transparent}
+    </style>
+{% endblock %}
+
+{% block body %}
+
+
+    <section class="food-theme home">
+        <div class="container">
+
+
+            {{ form_start(form,{'attr':{'id':'form-store'}}) }}
+
+                <div class="row">
+                    <div class="col-md-8 col-sm-10 col-12 mx-auto home-text">
+
+
+                        <h1 class="mt-2 font-weight-bold">{% trans %}Order Delivery Food Online{% endtrans %}</h1>
+
+                        <h4>{% trans %}Chefs{% endtrans%} / {% trans %}Caterers{% endtrans %}</h4>
+
+                        <div class="search-by-city">
+
+                            <div class="row">
+
+                                <div class="col-md-5 col-10 m-auto">
+                                    <label>Country :</label>
+                                    <div class="my-select my-select-country">
+                                        {{ form_widget(form.country,{'attr':{'class':'my-select','placeholder':''}}) }}
+                                        <div class="select-selected">{% trans %}Choose your country{% endtrans %}</div>
+                                        <div class="select-items select-hide"></div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5 col-10 m-auto">
+                                    <label>City :</label>
+                                    <div class="my-select my-select-city">
+                                        {{ form_widget(form.city,{'attr':{'class':'my-select'}}) }}
+                                        <div class="select-selected select-selected-city">{% trans %}Choose Your City{% endtrans %}</div>
+                                        <div class="select-items select-hide"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="my-circles">
+
+                    <label>{% trans %}Search By{% endtrans%} : </label>
+
+                    <div class="my-circle">
+                        <div class="my-circle-content">
+                            <div class="my-circle-body">
+                                <input type="radio" class="store-radio"  name="store" value="chef" hidden>
+                                <img src="{{ asset('assets/img/chef-icon.png') }}">
+                                <h5>Chef</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="my-circle">
+                        <div class="my-circle-content">
+                            <div class="my-circle-body">
+                                <input type="radio" class="store-radio" name="store" value="caterer" hidden>
+                                <img src="{{ asset('assets/img/caterer-icon.png') }}">
+                                <h5>Traiteur</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            {{ form_end(form) }}
+        </div>
+
+        <div class="pl"><div></div></div>
+    </section>
+
+
+    <!----------------------------------------------------------------------------------------------------->
+    <!----------------------------------------------------------------------------------------------------->
+
+
+    <section class="store">
+        <!-- container -->
+        <div class="container">
+            <div class="title-section title-featured">
+                {% if role == "ALL_ROLES" %}
+                    <!--<h2>{% trans %}Featured Traiteurs & Chefs{% endtrans %}</h2>-->
+                {% elseif role == "ROLE_CHEF" %}
+                    <h2>{% trans %}Featured Chefs{% endtrans %}</h2>
+                {% elseif role == "ROLE_TRAITEUR" %}
+                    <h2>{% trans %}Featured Traiteurs{% endtrans %}</h2>
+                {% endif %}
+            </div>
+
+            <!-- row -->
+            <div class="row justify-content-center">
+                {% for type,messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ type }} alert-dismissible fade show w-100" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% if stores is empty %}
+                    <h3>{% trans %}Choose your City and lunch Search{% endtrans %}</h3>
+                {% endif %}
+                {% for store in stores %}
+                    <!-- banner -->
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="banner-store" >
+
+                            <a href="{{ path('show_store',{'id': store.id}) }}">
+                                <div class="banner-store-body">
+                                    <img src="{{ asset('images/cover_image/') }}{{ store.coverImage }}" alt="">
+                                    <div class="banner-store-caption text-center">
+                                        <h4 class="banner-store-title">{{ store.storeName}}</h4>
+                                        <div><span>pizza</span> - <span>pizza</span></div>
+                                    </div>
+                                </div>
+                            </a>
+
+                            {% if app.user|default(null) %}
+                                {% if app.user != store %}
+                                    {% set exist = false %}
+                                    {% set followId = null %}
+
+                                    {% for follow in app.user.followers %}
+                                        {% if follow.store == store %}
+                                            {% set exist = true %}
+                                            {% set followId = follow.id %}
+                                        {% endif %}
+                                    {% endfor%}
+
+                                    <div class="banner-store-footer">
+                                        {% if exist == true %}
+                                            <a href="{{ path('removeFollower',{'id':followId}) }}"> <i class="fas fa-user-minus"></i>  {% trans %}UnFollow{% endtrans %}</a>
+                                        {% else %}
+                                            <a href="{{ path('addFollower',{'store':store.id}) }}"> <i class="fas fa-user-plus"></i> {% trans %}Follow{% endtrans %}</a>
+                                        {% endif %}
+                                    </div>
+
+                                {% endif %}
+
+                            {% endif %}
+
+
+                        </div>
+
+                    </div>
+                    <!-- /banner -->
+
+                {% endfor %}
+
+
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </section>
+
+
+
+    <section class="services" id="services">
+
+        <!--<div class="pl-services"><div></div></div>-->
+
+        <div class="container">
+            <div class="title-section title-services"><h2>{% trans %}Opportunities{% endtrans %}</h2></div>
+
+            <div class="row">
+
+                <div class="col-12 col-md-6 col-lg-4 Opportunity">
+                    <div class="services-box">
+                        <div class="services-box-icon">
+                            <div class="icon">
+                                <i class="fa fa-handshake"></i>
+                            </div>
+                        </div>
+
+                        <div class="services-content">
+                            <h5>{% trans %}Partner{% endtrans %}</h5>
+                            <p>{% trans %}Become a partner with the Foodopia group and increase your sales{% endtrans %}</p>
+                            <div class="get-started">
+                                <a href="{{ path('registrationPartner') }}" class="btn-started">{% trans %}Get Started{% endtrans %}</a>
+                            </div>
+                        </div>
+                    </div> <!-- feature-box-02 -->
+                </div> <!-- col -->
+
+                <div class="col-12 col-md-6 col-lg-4 Opportunity">
+                    <div class="services-box">
+                        <div class="services-box-icon">
+                            <div class="icon">
+                                <i class="fa fa-motorcycle"></i>
+                            </div>
+                        </div>
+
+                        <div class="services-content">
+                            <h5>{{ 'Driver'|trans }}</h5>
+                            <p>{% trans %}Delivery man with Foodepia? Deliver with Foodepia to earn significant income with flexibility and freedom.{% endtrans %}</p>
+                            <div class="get-started">
+                                <a href="{{ path('registrationDriver') }}" class="btn-started">{% trans %}Get Started{% endtrans %}</a>
+                            </div>
+                        </div>
+                    </div> <!-- feature-box-02 -->
+                </div> <!-- col -->
+
+                <div class="col-12 col-md-6 col-lg-4 Opportunity">
+                    <div class="services-box">
+                        <div class="services-box-icon">
+                            <div class="icon">
+                                <i class="fa fa-user"></i>
+                            </div>
+                        </div>
+
+                        <div class="services-content">
+                            <h5>{% trans %}Customer{% endtrans %}</h5>
+                            <p>{%trans %}Register, order at foodepia and enjoy a fast and professional delivery service.{% endtrans %}</p>
+                            <div class="get-started">
+                                <a href="{{ path('registrationCustomer') }}" class="btn-started">{{ 'Get Started'|trans }}</a>
+                            </div>
+                        </div>
+                    </div> <!-- feature-box-02 -->
+                </div> <!-- col -->
+
+
+            </div> <!-- row -->
+        </div> <!-- container -->
+    </section>
+
+
+    <!-- =========================== Cart Detail =================================== -->
+    {{ render(url('headerCart')) }}
+    <!-- =========================== Cart Detail =================================== -->
+
+{% endblock %}
+{% block javascripts %}
+
+    <!-- my script -->
+    <script src="{{ asset('assets/js/app.js') }}"></script>
+    <!-- my script -->
+
+    <script>
+
+        $('.my-circle-body').click(function () {
+            $(this).children("input").prop("checked", true)
+            $('#form-store').submit();
+        })
+    </script>
+
+
+{% endblock %}
+

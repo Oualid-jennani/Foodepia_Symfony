@@ -1,0 +1,55 @@
+<aside id="ms-side-nav" class="side-nav fixed ms-aside-scrollable ms-aside-left">
+	<!-- Logo -->
+	<div class="logo-sn bg-white ms-d-block-lg">
+		<a class="pl-0 ml-0 text-center" href="{{ path('dashboardChef') }}">
+			<img src="{{ asset('dashAssets/img/logo.png') }}" alt="logo">
+		</a>
+	</div>
+	<!-- Navigation -->
+	<ul class="accordion ms-main-aside fs-14" id="side-nav-accordion">
+
+		<!-- Dashboard -->
+		<li class="menu-item">
+			<a href="#" class="has-chevron" data-toggle="collapse" data-target="#dashboard" aria-expanded="false" aria-controls="dashboard"> <span><i class="material-icons fs-16">dashboard</i>Dashboard </span>
+			</a>
+			<ul id="dashboard" class="collapse" aria-labelledby="dashboard" data-parent="#side-nav-accordion">
+				<li> <a href="{{ path('dashboardRestaurant') }}">Costic</a>
+				</li>
+			</ul>
+		</li>
+		<!-- /Dashboard -->
+
+
+		<!-- Menus -->
+		<li class="menu-item">
+			<a href="javascript:void(0)" class="has-chevron" data-toggle="collapse" data-target="#Menu" aria-expanded="false" aria-controls="Menu"> <span><i class="material-icons fs-16">&#xe561;</i> Menu </span>
+			</a>
+			<ul id="Menu" class="collapse" aria-labelledby="Menu" data-parent="#side-nav-accordion">
+				<li> <a href="{{ path('listMenu') }}">Menu List</a></li>
+				<li> <a href="{{ path('newMenu') }}">Add Menu</a></li>
+			</ul>
+		</li>
+		<!-- /Menus -->
+
+		<!-- Sub Menus -->
+		<li class="menu-item">
+			<a href="javascript:void(0)" class="has-chevron" data-toggle="collapse" data-target="#SubMenu" aria-expanded="false" aria-controls="SubMenu"> <span><i class="material-icons fs-16">&#xe561;</i> Sub Menu </span>
+			</a>
+			<ul id="SubMenu" class="collapse" aria-labelledby="SubMenu" data-parent="#side-nav-accordion">
+				<li> <a href="{{ path('listSubMenu') }}">Sub Menu List</a></li>
+				<li> <a href="{{ path('newSubMenu') }}">Add Sub Menu</a></li>
+			</ul>
+		</li>
+		<!-- /Sub Menus -->
+
+		<!-- Order -->
+		<li class="menu-item">
+			<a href="javascript:void(0)" class="has-chevron" data-toggle="collapse" data-target="#Orders" aria-expanded="false" aria-controls="Orders"> <span><i class="material-icons fs-16">&#xe561;</i> Orders </span>
+			</a>
+			<ul id="Orders" class="collapse" aria-labelledby="Orders" data-parent="#side-nav-accordion">
+				<li> <a href="{{ path('restaurantOrders') }}">Order List</a></li>
+			</ul>
+		</li>
+		<!-- /Order -->
+	</ul>
+</aside>

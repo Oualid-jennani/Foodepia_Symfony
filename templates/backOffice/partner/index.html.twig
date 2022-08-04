@@ -1,0 +1,21 @@
+{% extends 'backOffice/baseDash.html.twig' %}
+
+{% block body %}
+
+    {% if partner.coverImage is null %}
+        <div class="col-lg-12">
+            <div class="alert alert-danger font-weight-bold"> <a href="{{ path('dashPartnerProfile') }}">{% trans %}You need to complete your cover picture{% endtrans %}</a></div>
+        </div>
+    {% endif %}
+    {% if partner.profileImage is null %}
+        <div class="col-lg-12">
+            <div class="alert alert-danger font-weight-bold"><a href="{{ path('dashPartnerProfile') }}">{% trans %}You need to complete your profile picture{% endtrans %}</a></div>
+        </div>
+    {% endif %}
+    {% if partner.localisation is null %}
+        <div class="col-lg-12">
+            <div class="alert alert-danger font-weight-bold"><a href="{{ path('dashPartnerProfile') }}">{% trans %}You need to complete your localisation information's{% endtrans %}</a></div>
+        </div>
+    {% endif %}
+
+{% endblock %}

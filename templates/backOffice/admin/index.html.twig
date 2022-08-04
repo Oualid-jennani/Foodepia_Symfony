@@ -1,0 +1,58 @@
+{% extends 'backOffice/baseDash.html.twig' %}
+
+{% block title %}Dashboard {% endblock %}
+
+{% block body %}
+
+    <div class="col-md-12">
+        <h1 class="db-header-title">Welcome, Anny</h1>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="ms-card card-gradient-success ms-widget ms-infographics-widget">
+            <div class="ms-card-body media">
+                <div class="media-body">
+                    <h6>{% trans %}Total Chef's Count{% endtrans %}</h6>
+                    <p class="ms-card-change"> <i class="material-icons">arrow_upward</i>{{ statistics['chefCount'] }}</p>
+                </div>
+            </div>
+            <i class="flaticon-user"></i>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="ms-card card-gradient-secondary ms-widget ms-infographics-widget">
+            <div class="ms-card-body media">
+                <div class="media-body">
+                    <h6>{% trans %}Total Carters{% endtrans %}</h6>
+                    <p class="ms-card-change"> {{ statistics['carterCount'] }}</p>
+                </div>
+            </div>
+            <i class="flaticon-user"></i>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="ms-card card-gradient-success ms-widget ms-infographics-widget">
+            <div class="ms-card-body media">
+                <div class="media-body">
+                    <h6>{% trans %}Total Customers{% endtrans %}</h6>
+                    <p class="ms-card-change"> <i class="material-icons">arrow_upward</i> {{ statistics['customerCount']}}</p>
+                </div>
+            </div>
+            <i class="flaticon-user"></i>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="ms-card card-gradient-secondary ms-widget ms-infographics-widget">
+            <div class="ms-card-body media">
+                <div class="media-body">
+                    <h6>{% trans %}Total Drivers{% endtrans %}</h6>
+                    <p class="ms-card-change"> {{ statistics['driverCount'] }}</p>
+                </div>
+            </div>
+            <i class="flaticon-user"></i>
+        </div>
+    </div>
+
+{% endblock %}

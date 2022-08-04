@@ -1,0 +1,103 @@
+{% extends 'backOffice/baseDash.html.twig' %}
+{% block title %}Dashboard | Sponsored Restaurants{% endblock %}
+{% block body %}
+
+
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb-arrow has-gap has-bg">
+                <li class="breadcrumb-item"><a href="{{ path('dashboard') }}"><i class="material-icons">home</i> Home</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Sponsored Restaurant</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">Sponsored Restaurant List</a></li>
+            </ol>
+        </nav>
+    </div>
+
+
+    <div class="col-md-12">
+        <div class="col-md-12 mx-auto">
+            <a href="{{ path('dashAdminNewSponsoredRestaurant') }}" class="btn btn-primary mb-2"><i class="fas fa-plus mr-2"></i> New Sponsored Restaurant</a>
+            <div class="ms-panel">
+                <div class="ms-panel-header mb-4">
+                    <h6 class="float-left">Sponsored Restaurant List</h6>
+                    {% for  message in app.flashes('success') %}
+                        <div class=" text-success font-weight-bold float-right">{{ message }}</div>
+                    {% endfor %}
+
+                    {% for  message in app.flashes('error') %}
+                        <div class=" text-danger font-weight-bold float-right">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                <div class="ms-panel-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-hover thead-primary text-center">
+                            <thead>
+                            <tr>
+                                <th scope="col">Restaurant</th>
+                                <th scope="col">Start Date</th>
+                                <th scope="col">End Date</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for restaurant in sponsoredRestaurant |sort|reverse %}
+                                <tr>
+                                    <td>{{ restaurant.user.storeName }}</td>
+                                    <td>{{ restaurant.startDate | date('d/m/Y') }}</td>
+                                    <td>{{ restaurant.endDate | date('d/m/Y') }}</td>
+                                    <td>
+                                        <a href='{{ path('editPackage',{'id':restaurant.id})}}'><i class='fas fa-edit text-success'></i></a>
+                                        <a href='javascript:void(0)' data-toggle="modal" data-target="#modal-1" onclick='deletePackage("{{ path('deletePackage',{'id':restaurant.id})}}")'><i class='far fa-trash-alt ms-text-danger'></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="modal fade" id="modal-1" tabindex="-1" role="dialog" aria-labelledby="modal-1">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h3 class="modal-title has-icon ms-icon-round "><i class="flaticon-alert-1 bg-primary text-white"></i>Delete Confirm !</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Do you really want to delete ?</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                    <a href="#" class="btn btn-primary shadow-none" id="linkDelete">Delete</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{%  endblock %}
+
+{% block javascripts %}
+
+    <script>
+
+        function deletePackage(link) {
+            document.getElementById("linkDelete").href = link;
+        }
+
+    </script>
+
+{% endblock %}

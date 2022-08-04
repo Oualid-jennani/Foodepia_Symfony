@@ -1,0 +1,98 @@
+{% extends 'backOffice/baseDash.html.twig' %}
+{% block title %}Dashboard | Package List{% endblock %}
+{% block body %}
+
+
+	<div class="col-md-12">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb breadcrumb-arrow has-gap has-bg">
+				<li class="breadcrumb-item"><a href="{{ path('dashboard') }}"><i class="material-icons">home</i> Home</a></li>
+				<li class="breadcrumb-item"><a href="javascript:void(0)">Packages</a></li>
+				<li class="breadcrumb-item active"><a href="javascript:void(0)">List Packages</a></li>
+			</ol>
+		</nav>
+	</div>
+
+
+	<div class="col-md-12">
+		<div class="col-md-12 mx-auto">
+			<div class="ms-panel">
+				<div class="ms-panel-header mb-4">
+					<h6 class="float-left">Packages List</h6>
+					{% for  message in app.flashes('success') %}
+						<div class=" text-success font-weight-bold float-right">{{ message }}</div>
+					{% endfor %}
+
+					{% for  message in app.flashes('error') %}
+						<div class=" text-danger font-weight-bold float-right">{{ message }}</div>
+					{% endfor %}
+				</div>
+				<div class="ms-panel-body">
+
+					<div class="table-responsive">
+						<table class="table table-hover thead-primary text-center">
+							<thead>
+							<tr>
+								<th scope="col">Name</th>
+								<th scope="col">Description</th>
+								<th scope="col">Price</th>
+								<th scope="col">Member Ship Limit</th>
+								<th scope="col">Package Usage</th>
+								<th scope="col">Package Type</th>
+								<th scope="col">Merchant Limit By Sell</th>
+								<th scope="col">Action</th>
+							</tr>
+							</thead>
+							<tbody>
+
+							{% for package in packages |sort|reverse %}
+								<tr>
+									<td>{{ package.name }}</td>
+									<td>{{ package.description }}</td>
+									<td>{{ package.price }}</td>
+									<td>{{ package.memberShipLimit }}</td>
+									<td>{{ package.packUsage }}</td>
+									<td>{{ package.type }}</td>
+									<td>{{ package.limitMerchantBySell }}</td>
+									<td>
+										<a href='{{ path('editPackage',{'id':package.id})}}'><i class='fas fa-edit text-success'></i></a>
+										<a href='javascript:void(0)' data-toggle="modal" data-target="#modal-1" onclick='deleteAction("{{ path('deletePackage',{'id':package.id})}}")'><i class='far fa-trash-alt ms-text-danger'></i></a>
+									</td>
+								</tr>
+							{% endfor %}
+
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<div class="modal fade" id="modal-1" tabindex="-1" role="dialog" aria-labelledby="modal-1">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<h3 class="modal-title has-icon ms-icon-round "><i class="flaticon-alert-1 bg-primary text-white"></i>Delete Confirm !</h3>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				</div>
+
+				<div class="modal-body">
+					<p>Do you really want to delete ?</p>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+					<a href="#" class="btn btn-primary shadow-none" id="linkDelete">Delete</a>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+{%  endblock %}

@@ -1,0 +1,93 @@
+{% extends 'backOffice/baseDash.html.twig' %}
+{% block title %}Dashboard | Order Detail{% endblock %}
+{% block body %}
+
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb-arrow has-gap has-bg">
+                <li class="breadcrumb-item"><a href="{{ path('dashboard') }}"><i class="material-icons">home</i> Home</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Partner</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">Detail</a></li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="col-md-12">
+
+        <div class="ms-panel">
+            <div class="ms-panel-body">
+
+                <!-- Invoice To -->
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="invoice-address">
+                            <h4 class="text-success">Partner Info</h4>
+                            <p class="mb-0"><b>Name :</b> {{ partner.fullName }}</p>
+                            <p class="mb-0"><b>Phone :</b> {{ partner.contactPhone }}</p>
+                            <p class="mb-0"><b>Address :</b> {{ partner.address }}</p>
+                            <p class="mb-0"><b>City :</b> {{ partner.city.name }}</p>
+                            <p class="mb-0"><b>Country :</b> {{ partner.city.country.name }}</p>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        {% if partner.cinImage %}
+                            <div class="invoice-address">
+                                <h5 class="text-success">Cin Image</h5>
+                                <img src="{{ asset('images/cin_image/') }}{{ partner.cinImage }}" class="img-thumbnail" width="200px"height="150px">
+                            </div>
+                        {% endif %}
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-8 mx-auto">
+            <div class="ms-panel ms-panel-fh">
+                <div class="ms-panel-header mb-4">
+                    <div class="float-right">
+                        {% for  message in app.flashes('success') %}
+                            <div class=" text-success float-right font-weight-bold">{{ message }}</div>
+                        {% endfor %}
+
+                        {% for  message in app.flashes('error') %}
+                            <div class=" text-danger float-right font-weight-bold">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                    <h6 class="float-left">{% trans %}Add Cin Image{% endtrans %}</h6>
+                </div>
+                <div class="ms-panel-body">
+                    {{ form_start(form,{'attr':{'class':'needs-validation clearfix'}}) }}
+                    <div class="form-row">
+
+                        <div class="input-group">
+                            <div class="box box-file">
+                                {{ form_widget(form.brochureCin, {'attr':{'class':'inputfile','type':'file','data-multiple-caption':'{count} files selected'}}) }}
+                                <label for="edit_cin_image_brochureCin"><span></span> <strong><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg> Choose a picture &hellip;</strong></label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-row">
+                        <div class="col-12 text-right p-0">
+                            <button type="submit" class="btn btn-primary m-0">{% trans %}Add{% endtrans %}</button>
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+{%  endblock %}

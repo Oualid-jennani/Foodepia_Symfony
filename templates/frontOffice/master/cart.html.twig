@@ -1,0 +1,127 @@
+{% extends 'baseCart.html.twig' %}
+{% form_theme form _self %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+	<!-- cart -->
+	<!-- Switcher Start -->
+
+		<div class="w3-ch-sideBar w3-bar-block w3-card-2 w3-animate-right"  style="display:none;right:0;" id="rightMenu">
+			<div class="rightMenu-scroll">
+				<h4 class="cart_heading"> {% trans %}Your cart{% endtrans %}</h4>
+				<button onclick="closeRightMenu()" class="w3-bar-item w3-button w3-large"><i class="ti-close"></i></button>
+				{{ form_start(form,{'action': path('headerCart'), 'method': 'post'}) }}
+				<div class="right-ch-sideBar" id="side-scroll">
+
+					<div class="cart_select_items">
+						{% for row in form.cartLines %}
+							{{ form_row(row) }}
+						{% endfor %}
+					</div>
+
+					<!-- Coupon Box -->
+					<div class="text-left">
+						<button class="btn btn-outline-dark p-2">{% trans %}Update Cart{% endtrans %}</button>
+					</div>
+					<!-- Coupon Box -->
+
+					<div class="cart_subtotal">
+						{% set subtotal = cart.total - 15 %}
+						<h6>Subtotal<span class="theme-cl">
+								{{ subtotal |number_format(2, ',', ' ') }}
+								{% if  "Morroco" == app.session.get('COUNTRY') %}
+									Dhs
+								{% else %}
+									$
+								{% endif %}
+							</span></h6>
+					</div>
+
+					<div class="cart_action">
+						<ul>
+							<li><a href="{{ path('cart') }}" class="btn btn-go-cart btn-theme">{% trans %}View/Edit Cart{% endtrans %}</a></li>
+							<li><a href="{{ path('checkout') }}" class="btn btn-checkout">{% trans %}Checkout Now {% endtrans %}</a></li>
+						</ul>
+					</div>
+				</div>
+				{{ form_end(form) }}
+			</div>
+		</div>
+
+
+{% endblock %}
+
+{% block _cart_cartLines_entry_row %}
+
+	{% set variant = form.vars.value.variant %}
+	{% set qte = form.vars.value.quantity %}
+	{% if variant.menu|default(null) %}
+
+		<div class="cart_selected_single">
+			<div class="cart_selected_single_thumb mt-2">
+				<img src="{{ asset('images/menu/') }}{{ variant.menu.images[0] }}" class="img-fluid" alt="" />
+			</div>
+			<div class="cart_selected_single_caption">
+				<h4 class="product_title">{{ variant.menu.name }}</h4>
+				<span class="numberof_item">
+					{% if  "Morroco" == app.session.get('COUNTRY') %}
+						Dhs
+					{% else %}
+						$
+					{% endif %}
+					{{ variant.price|number_format(2, ',', ' ') }}x{{ qte}}
+
+					<span class="float-right">
+						{% if  "Morroco" == app.session.get('COUNTRY') %}
+							Dhs
+						{% else %}
+							$
+						{% endif %}
+						{{ form.vars.value.total()|number_format(2, ',', ' ') }}</span>
+				</span>
+				<div>
+			        <span>
+			            {{ form_widget(form.quantity, {'attr': {'class': '','min':'1','max':'10'}}) }}
+			        </span>
+					<a href="javascript:void(0)" class="text-danger float-right tbl_cart_remove">{% trans %}Remove{% endtrans %}</a>
+				</div>
+			</div>
+		</div>
+
+	{% elseif variant.subMenu|default(null) %}
+
+		<div class="cart_selected_single">
+			<div class="cart_selected_single_thumb mt-2">
+				<img src="{{ asset('images/sub_menu/') }}{{ variant.subMenu.imageUrl }}" class="img-fluid" alt="" />
+			</div>
+			<div class="cart_selected_single_caption">
+				<h4 class="product_title">{{ variant.subMenu.name }}</h4>
+
+				<span class="numberof_item">
+					{% if  "Morroco" == app.session.get('COUNTRY') %}
+						Dhs
+					{% else %}
+						$
+					{% endif %}
+					{{ variant.price|number_format(2, ',', ' ') }}x{{ qte}}
+					<span class="float-right">
+						{% if  "Morroco" == app.session.get('COUNTRY') %}
+							Dhs
+						{% else %}
+							$
+						{% endif %}
+						{{ form.vars.value.total()|number_format(2, ',', ' ') }}</span></span>
+				<div>
+		        <div class="float-left">
+		            {{ form_widget(form.quantity, {'attr': {'class': '','min':'1','max':'10'}}) }}
+		        </div>
+
+					<a href="javascript:void(0)" class="text-danger float-right tbl_cart_remove">{% trans %}Remove{% endtrans %}</a>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+
+{% endblock %}

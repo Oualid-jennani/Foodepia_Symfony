@@ -1,0 +1,73 @@
+<header>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-4 col-12">
+                <a class="header-content-logo" href="{{ path('index') }}" data-value="0">
+                    <label class="label-logo">Foodepia</label>
+                </a>
+
+                <div class="user-connect">
+                    {% if not app.user %}
+                        <a href="{{ path("security_login") }}" class="btn btn-public text-white">{{ 'Login'|trans }}</a>
+                    {% else %}
+                        <a href="{{ path('dashboard') }}" class="user-connect-logo"><i class="fa fa-user-circle"></i></a>
+                    {% endif %}
+                </div>
+
+            </div>
+
+
+            <div class="col-md-8 col-12">
+                <div class="user-action">
+                    <div class="user-action-link">
+                        <ul>
+                            <li><a data-toggle="collapse" href="#mySearch" role="button" aria-expanded="false" aria-controls="mySearch" class="collapsed"><i class="ti-search"></i></a></li>
+                            <li>
+                                <a href="javascript:void(0);" onclick="openRightMenu()"><i class="ti-shopping-cart"></i>
+                                    <span class="cart_counter">
+                                        {% if app.session.get('CART')|default(null) %}
+                                            {{ app.session.get('CART').cartLines.count }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                {% if not app.user %}
+                                    <a href="{{ path("security_login") }}" class="btn btn-public text-white">{{ 'Login'|trans }}</a>
+                                {% else %}
+                                    <a href="{{ path('dashboard') }}"><i class="ti-user"></i></a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-10 mx-auto">
+                <div class="collapse search-header" id="mySearch" style="">
+                    <div class="blocks search_blocks">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search entire store here...">
+                            <div class="input-group-append">
+                                <button class="btn search_btn" type="button"><i class="ti-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+</header>
+
+
+
